@@ -1,0 +1,72 @@
+# Configuration for Hyperbolic Analysis of BERT's Syntax and Semantics
+
+# Model Settings
+model:
+  name: bert-base-uncased
+  hidden_dim: 768
+  num_layers: 12
+  layer_indices: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]  # 0 is embeddings, 1-12 are transformer layers
+
+# Data Settings
+data:
+  ud_treebank:
+    path: data/ud_treebanks
+    language: en
+    split: train
+    max_sentences: 1000
+  
+  glue:
+    path: data/glue
+    task: sst2
+    split: train
+    max_examples: 1000
+
+# Hyperbolicity Analysis Settings
+hyperbolicity:
+  metrics: ["delta", "curvature", "tree_likeness"]
+  sample_size: 50
+  batch_size: 8
+  max_seq_len: 128
+  save_visualizations: true
+
+# Syntax-Semantics Analysis Settings
+syntax_semantics:
+  batch_size: 8
+  max_seq_len: 128
+  nearest_neighbors: 10
+  pca_components: 2
+  save_visualizations: true
+
+# Probe Settings
+probe:
+  euclidean:
+    rank: 128
+  
+  hyperbolic:
+    rank: 64
+    curvature: -1.0
+  
+  training:
+    batch_size: 16
+    lr: 0.001
+    epochs: 5
+    patience: 2
+    weight_decay: 0.01
+
+# Fine-tuning Settings
+fine_tuning:
+  batch_size: 16
+  lr: 2e-5
+  epochs: 3
+  warmup_steps: 100
+  hyperbolic_adapter_dim: 64
+  tasks: ["parsing", "nli"]
+  save_model: true
+
+# Output Settings
+output:
+  root_dir: outputs
+  save_embeddings: false
+  save_metrics: true
+  visualization_format: png
+  dpi: 300
